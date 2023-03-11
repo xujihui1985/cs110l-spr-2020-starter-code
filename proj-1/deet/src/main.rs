@@ -1,10 +1,13 @@
 mod debugger;
 mod debugger_command;
 mod inferior;
+mod dwarf_data;
+mod gimli_wrapper;
 
 use crate::debugger::Debugger;
 use nix::sys::signal::{signal, SigHandler, Signal};
 use std::env;
+
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -18,5 +21,5 @@ fn main() {
     // processes)
     unsafe { signal(Signal::SIGINT, SigHandler::SigIgn) }.expect("Error disabling SIGINT handling");
 
-    Debugger::new(target).run();
+    Debugger::new(target).unwrap().run();
 }
